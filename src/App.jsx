@@ -1,8 +1,10 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 
+import { cleanEnglishDescription } from './utils/translationDictionary';
+
 const ZALO_LINK = 'https://zalo.me/0933684560';
 const TELEGRAM_LINK = 'https://t.me/Patrick_Tech_Fullapp';
-const TICKET_LINK = 'https://telegram-ticket-system.vercel.app/';
+const TICKET_LINK = import.meta.env.VITE_TICKET_URL || 'https://telegram-ticket-system.vercel.app/';
 
 const fallbackProducts = [
   { id: 1, title: 'Windows 11 Pro - Key bản quyền', category: 'Voucher giảm giá & Tài khoản', price: 890000, priceText: '890.000đ', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của web', sourceType: 'web', description: 'Key bản quyền chính hãng, kích hoạt nhanh và có hỗ trợ cài đặt từ xa.' },
@@ -165,7 +167,7 @@ const copy = {
   }
 };
 
-const VND_PER_USD = 26000;
+const VND_PER_USD = Number(import.meta.env.VITE_USD_EXCHANGE_RATE) || 26000;
 
 // Catalog descriptions are authored in Vietnamese. Translate complete support
 // sentences before individual terms so English product details remain readable.
@@ -211,7 +213,8 @@ const englishTerms = [
 function translateCatalogText(text, language) {
   if (!text || language === 'vi') return text;
   const translatedPhrases = englishCatalogPhrases.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), text);
-  return englishTerms.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), translatedPhrases);
+  const translatedTerms = englishTerms.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), translatedPhrases);
+  return cleanEnglishDescription(translatedTerms);
 }
 
 const catalogCategoryLabels = {
