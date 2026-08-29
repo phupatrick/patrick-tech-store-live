@@ -221,6 +221,23 @@ const catalogCategoryLabels = {
   software: { vi: 'Code, Tool & Phần mềm', en: 'Code, Tools & Software' },
 };
 
+const catalogCategoryOptions = {
+  vi: [
+    { id: 'all', label: 'Tất cả' },
+    { id: 'premium', label: 'Tài khoản Premium' },
+    { id: 'ai', label: 'API Key' },
+    { id: 'social', label: 'Mạng xã hội' },
+    { id: 'software', label: 'Sản phẩm Code & Tool' },
+  ],
+  en: [
+    { id: 'all', label: 'All' },
+    { id: 'premium', label: 'Premium Accounts' },
+    { id: 'ai', label: 'API Keys' },
+    { id: 'social', label: 'Social Growth' },
+    { id: 'software', label: 'Code & Tools' },
+  ],
+};
+
 function localizedCategory(product, language) {
   const category = product?.catalogCategory;
   return catalogCategoryLabels[category]?.[language] || (language === 'en' ? 'Digital products' : 'Sản phẩm số');
@@ -358,6 +375,7 @@ export default function App() {
   const [catalogStatus, setCatalogStatus] = useState('loading');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activePage, setActivePage] = useState('store');
+  const [activeCategory, setActiveCategory] = useState('all');
   const [translatedCatalog, setTranslatedCatalog] = useState({});
   const [translatedTitles, setTranslatedTitles] = useState({});
 
@@ -378,8 +396,12 @@ export default function App() {
       : { title: t.storeNoteTitle, text: t.storeNoteText };
 
   const filteredProducts = useMemo(
-    () => localizedProducts.filter((product) => `${product.title} ${product.category} ${product.description || ''}`.toLowerCase().includes(query.toLowerCase())),
-    [localizedProducts, query]
+    () => localizedProducts.filter((product) => {
+      const matchesCategory = activeCategory === 'all' || product.catalogCategory === activeCategory;
+      const searchable = `${product.title} ${product.category} ${product.description || ''}`.toLowerCase();
+      return matchesCategory && searchable.includes(query.toLowerCase());
+    }),
+    [localizedProducts, query, activeCategory]
   );
 
   useEffect(() => {
@@ -563,6 +585,19 @@ export default function App() {
             <div className="section-heading">
               <div><p className="section-kicker">{t.delivery}</p><h2>{t.featured}</h2></div>
               <a href="#products">{t.viewAll} <b>↗</b></a>
+            </div>
+            <div className="product-category-picker" role="tablist" aria-label={t.categories}>
+              {catalogCategoryOptions[language].map((category) => (
+                <button
+                  key={category.id}
+                  role="tab"
+                  aria-selected={activeCategory === category.id}
+                  className={activeCategory === category.id ? 'is-active' : ''}
+                  onClick={() => setActiveCategory(category.id)}
+                >
+                  {category.label}
+                </button>
+              ))}
             </div>
             {catalogStatus === 'loading' && <p className="catalog-note">{t.loadingProducts}</p>}
             {catalogStatus === 'error' && <p className="catalog-note is-warning">{t.catalogError}</p>}
