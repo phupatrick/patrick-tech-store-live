@@ -31,8 +31,8 @@ const pageTabs = {
 
 const hashtags = ['#chatgpt', '#youtubepremium', '#canva', '#duolingo', '#adobe', '#capcut', '#notion', '#grok', '#office365', '#spotify', '#netflix', '#figma'];
 const categories = {
-  vi: ['Voucher giảm giá', 'Tài khoản', 'Phần mềm', 'AI', 'Office', 'Streaming', 'Thiết kế', 'Giáo dục', 'Cloud', 'Code', 'Template'],
-  en: ['Discount vouchers', 'Accounts', 'Software', 'AI', 'Office', 'Streaming', 'Design', 'Education', 'Cloud', 'Code', 'Templates'],
+  vi: ['Tài khoản Premium', 'API Key & AI', 'Mạng xã hội', 'Code, Tool & Phần mềm'],
+  en: ['Premium Accounts', 'API Keys & AI', 'Social Growth', 'Code, Tools & Software'],
 };
 
 const copy = {
@@ -209,8 +209,16 @@ function translateCatalogText(text, language) {
   return englishTerms.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), translatedPhrases);
 }
 
-function localizedCategory(language) {
-  return language === 'en' ? 'Discount vouchers & accounts' : 'Voucher giảm giá & Tài khoản';
+const catalogCategoryLabels = {
+  premium: { vi: 'Tài khoản Premium', en: 'Premium Accounts' },
+  ai: { vi: 'API Key & AI', en: 'API Keys & AI' },
+  social: { vi: 'Mạng xã hội', en: 'Social Growth' },
+  software: { vi: 'Code, Tool & Phần mềm', en: 'Code, Tools & Software' },
+};
+
+function localizedCategory(product, language) {
+  const category = product?.catalogCategory;
+  return catalogCategoryLabels[category]?.[language] || (language === 'en' ? 'Digital products' : 'Sản phẩm số');
 }
 
 const formatPrice = (value, fallbackText, language) => {
@@ -255,7 +263,7 @@ function normalizeProduct(product) {
   const cleanedDescription = normalizeDescription(product.description);
   return {
     ...product,
-    category: 'Voucher giảm giá & Tài khoản',
+    category: product.catalogCategory || 'software',
     image: product.image || product.images?.[0] || 'https://stc-zh5.zdn.vn/catalog/thumb-fail.png',
     badge: 'Sản phẩm của web',
     description: isDescriptionNoise(cleanedDescription, product.priceText) ? '' : cleanedDescription,
@@ -318,7 +326,7 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyL
         <button className={saved ? 'save-button is-saved' : 'save-button'} aria-label={language === 'en' ? 'Save product' : 'Lưu sản phẩm'} onClick={toggleSave}>♡</button>
       </div>
       <div className="product-info">
-        <p>{localizedCategory(language)}</p>
+        <p>{localizedCategory(product, language)}</p>
         <h3>{translateCatalogText(product.title, language)}</h3>
         <strong>{formatPrice(product.price, product.priceText, language)}</strong>
         <div className="product-actions-row">
@@ -352,7 +360,7 @@ export default function App() {
     title: language === 'en'
       ? (translatedTitles[String(product.id || product.path || product.title)] || translateCatalogText(product.title, language))
       : product.title,
-    category: localizedCategory(language),
+    category: localizedCategory(product, language),
   })), [products, language, translatedTitles]);
   const priceInput = Number(sellPrice.replace(/\D/g, '')) || 0;
   const pageNote = activePage === 'seller'
@@ -642,7 +650,7 @@ export default function App() {
               </form>
             ) : modal === 'description' ? (
               <div className="contact-sheet">
-                <p className="section-kicker">{localizedCategory(language)}</p>
+                <p className="section-kicker">{localizedCategory(selectedProduct, language)}</p>
                 <h2>{t.viewDescription}</h2>
                 <div className="product-detail-summary">
                   <img src={selectedProduct?.image} alt="" />
@@ -666,7 +674,7 @@ export default function App() {
               </div>
             ) : (
               <div className="contact-sheet">
-                <p className="section-kicker">{localizedCategory(language)}</p>
+                <p className="section-kicker">{localizedCategory(selectedProduct, language)}</p>
                 <h2>{t.contactTitle}</h2>
                 <p className="contact-product">{language === 'en' ? (translatedTitles[String(selectedProduct?.id || selectedProduct?.path || selectedProduct?.title)] || translateCatalogText(selectedProduct?.title, 'en')) : selectedProduct?.title}</p>
                 <div className="contact-links">
