@@ -48,6 +48,8 @@ const copy = {
     heroText: 'Kho sản phẩm số đã xác thực, có sẵn link hỗ trợ qua Zalo và Telegram khi bạn cần mua nhanh.',
     sell: 'Trang người bán',
     wanted: 'Trang người mua',
+    sampleProducts: 'Sản phẩm mẫu của Patrick Tech',
+    games: 'Game',
     search: 'Tìm voucher giảm giá, tài khoản hoặc phần mềm số...',
     find: 'Tìm kiếm',
     categories: 'Danh mục',
@@ -111,6 +113,8 @@ const copy = {
     heroText: 'A verified catalog of digital products with quick Zalo and Telegram contact when you want to buy fast.',
     sell: 'Seller page',
     wanted: 'Buyer page',
+    sampleProducts: 'Patrick Tech sample products',
+    games: 'Games',
     search: 'Search discounts, accounts, or digital software...',
     find: 'Search',
     categories: 'Categories',
@@ -494,6 +498,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const selectHeroCollection = (search = '') => {
+    setActivePage('store');
+    setActiveCategory('all');
+    setQuery(search);
+    window.setTimeout(() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }), 0);
+  };
+
   useEffect(() => {
     let active = true;
 
@@ -550,6 +561,8 @@ export default function App() {
               <div className="hero-actions">
                 <button className="button button-secondary-alt" onClick={() => selectPage('seller')}>{t.sell}</button>
                 <button className="button button-text" onClick={() => selectPage('buyer')}>{t.wanted}<b>↗</b></button>
+                <button className="button button-text" onClick={() => selectHeroCollection()}>{t.sampleProducts}</button>
+                <button className="button button-text" onClick={() => selectHeroCollection('game')}>{t.games}</button>
               </div>
               <div className="page-note">
                 <p className="section-kicker">{pageNote.title}</p>
