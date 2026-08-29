@@ -346,7 +346,7 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyL
     <article className="product-card">
       <div className="product-visual">
         <img src={product.image} alt={translateCatalogText(product.title, language)} loading="lazy" />
-        <span className="badge verified-badge"><span className="badge-check">✓</span>{language === 'en' ? 'Store product' : product.badge}</span>
+        <span className="badge verified-badge"><span className="badge-check">✓</span>{language === 'en' ? 'Patrick Tech product' : 'Sản phẩm của Patrick Tech'}</span>
         <button className={saved ? 'save-button is-saved' : 'save-button'} aria-label={language === 'en' ? 'Save product' : 'Lưu sản phẩm'} onClick={toggleSave}>♡</button>
       </div>
       <div className="product-info">
