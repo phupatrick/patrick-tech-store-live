@@ -2,6 +2,7 @@
 
 const ZALO_LINK = 'https://zalo.me/0933684560';
 const TELEGRAM_LINK = 'https://t.me/Patrick_Tech_Fullapp';
+const TICKET_LINK = 'https://telegram-ticket-system.vercel.app/';
 
 const fallbackProducts = [
   { id: 1, title: 'Windows 11 Pro - Key bản quyền', category: 'Voucher giảm giá & Tài khoản', price: 890000, priceText: '890.000đ', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của web', sourceType: 'web', description: 'Key bản quyền chính hãng, kích hoạt nhanh và có hỗ trợ cài đặt từ xa.' },
@@ -89,6 +90,8 @@ const copy = {
     contactTitle: 'Chọn cách liên hệ để mua sản phẩm',
     zalo: 'Zalo 0933684560',
     telegram: 'Telegram @Patrick_Tech_Fullapp',
+    ticket: 'Gửi Ticket Hỗ Trợ / Đặt Hàng',
+    ticketEn: 'Submit Ticket / Support',
     storeNoteTitle: 'Sản phẩm của web',
     storeNoteText: 'Trang này hiển thị riêng các sản phẩm của web, gồm voucher giảm giá và tài khoản số.',
     sellerNoteTitle: 'Trang người bán',
@@ -150,6 +153,8 @@ const copy = {
     contactTitle: 'Choose a contact method to buy this product',
     zalo: 'Zalo 0933684560',
     telegram: 'Telegram @Patrick_Tech_Fullapp',
+    ticket: 'Submit Ticket / Support',
+    ticketEn: 'Submit Ticket / Support',
     storeNoteTitle: 'Store products',
     storeNoteText: 'This page shows only store-owned products, including discount vouchers and digital accounts.',
     sellerNoteTitle: 'Seller page',
@@ -310,13 +315,15 @@ function Logo() {
   );
 }
 
-function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyLabel, descriptionLabel }) {
+function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyLabel, descriptionLabel, ticketLabel }) {
   const [saved, setSaved] = useState(false);
 
   const toggleSave = () => {
     setSaved((current) => !current);
     onSave(!saved);
   };
+
+  const ticketUrl = `${TICKET_LINK}?subject=${encodeURIComponent(language === 'en' ? `Product request: ${product.title}` : `Yêu cầu sản phẩm: ${product.title}`)}`;
 
   return (
     <article className="product-card">
@@ -332,6 +339,7 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyL
         <div className="product-actions-row">
           <button className="description-button" aria-label={descriptionLabel} title={descriptionLabel} onClick={() => onViewDescription(product)}>{descriptionLabel}</button>
           <button className="buy-button" onClick={() => onBuy(product)}>{buyLabel}</button>
+          <a className="ticket-button" href={ticketUrl} target="_blank" rel="noreferrer">{ticketLabel}</a>
         </div>
       </div>
     </article>
@@ -500,6 +508,7 @@ export default function App() {
           <div className="nav-actions">
             <a className="domain-button" href="https://patricktechmedia.com" target="_blank" rel="noreferrer">{t.visitSite}</a>
             <a className="login-button" href={language === 'vi' ? 'https://patricktechmedia.com/vi/login' : 'https://patricktechmedia.com/en/login'} target="_blank" rel="noreferrer">{t.login}</a>
+            <a className="ticket-header-button" href={TICKET_LINK} target="_blank" rel="noreferrer">{t.ticket}</a>
             <button className="language-button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')}>{t.language}</button>
             
           </div>
@@ -568,6 +577,7 @@ export default function App() {
                   onViewDescription={openDescriptionModal}
                   buyLabel={t.buyNow}
                   descriptionLabel={t.viewDescription}
+                  ticketLabel={t.ticket}
                 />
               )) : <p className="empty-state">{t.noResult}</p>}
             </div>

@@ -23,3 +23,4 @@ footer{max-width:1184px;margin:auto;padding:29px 0;display:flex;align-items:cent
 @media(max-width:560px){.search-bar{flex-wrap:wrap}.search-bar button{width:100%}.hero h1{font-size:38px}.hero-actions .button{width:100%}.page-tabs{display:grid;grid-template-columns:1fr}.product-visual{height:220px}.request-meta{flex-direction:column;align-items:flex-start}.request-contact{width:100%}}
 
 
+.ticket-header-button,.ticket-button{background:#fff4dc;border:1px solid #e7b85d;border-radius:6px;color:#704b00;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap}.ticket-header-button{padding:8px 10px}.ticket-button{display:grid;place-items:center;padding:10px 14px;line-height:1.2;min-height:42px}.ticket-header-button:hover,.ticket-button:hover{background:#ffe8b3}
