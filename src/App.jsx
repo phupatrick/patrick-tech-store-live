@@ -7,10 +7,10 @@ const TELEGRAM_LINK = 'https://t.me/Patrick_Tech_Fullapp';
 const TICKET_LINK = import.meta.env.VITE_TICKET_URL || 'https://telegram-ticket-system.vercel.app/';
 
 const fallbackProducts = [
-  { id: 1, title: 'Windows 11 Pro - Key bản quyền', category: 'Voucher giảm giá & Tài khoản', price: 890000, priceText: '890.000đ', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của web', sourceType: 'web', description: 'Key bản quyền chính hãng, kích hoạt nhanh và có hỗ trợ cài đặt từ xa.' },
-  { id: 2, title: 'Canva Pro - Gói 12 tháng', category: 'Voucher giảm giá & Tài khoản', price: 299000, priceText: '299.000đ', image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của web', sourceType: 'web', description: 'Tài khoản dùng ổn định, phù hợp cho thiết kế, social và dựng nội dung.' },
-  { id: 3, title: 'Voucher giảm giá AI Premium', category: 'Voucher giảm giá & Tài khoản', price: 1490000, priceText: '1.490.000đ', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của web', sourceType: 'web', description: 'Voucher hỗ trợ giảm chi phí khi mua các gói công cụ AI và phần mềm số.' },
-  { id: 4, title: 'Landing Page React + Tailwind', category: 'Voucher giảm giá & Tài khoản', price: 2200000, priceText: '2.200.000đ', image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của web', sourceType: 'web', description: 'Mẫu code tối ưu mobile, sạch và dễ chỉnh sửa để dùng ngay cho bán hàng.' },
+  { id: 1, title: 'Windows 11 Pro - Key bản quyền', category: 'Voucher giảm giá & Tài khoản', price: 890000, priceText: '890.000đ', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của Patrick Tech', sourceType: 'web', description: 'Key bản quyền chính hãng, kích hoạt nhanh và có hỗ trợ cài đặt từ xa.' },
+  { id: 2, title: 'Canva Pro - Gói 12 tháng', category: 'Voucher giảm giá & Tài khoản', price: 299000, priceText: '299.000đ', image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của Patrick Tech', sourceType: 'web', description: 'Tài khoản dùng ổn định, phù hợp cho thiết kế, social và dựng nội dung.' },
+  { id: 3, title: 'Voucher giảm giá AI Premium', category: 'Voucher giảm giá & Tài khoản', price: 1490000, priceText: '1.490.000đ', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của Patrick Tech', sourceType: 'web', description: 'Voucher hỗ trợ giảm chi phí khi mua các gói công cụ AI và phần mềm số.' },
+  { id: 4, title: 'Landing Page React + Tailwind', category: 'Voucher giảm giá & Tài khoản', price: 2200000, priceText: '2.200.000đ', image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=85', badge: 'Sản phẩm của Patrick Tech', sourceType: 'web', description: 'Mẫu code tối ưu mobile, sạch và dễ chỉnh sửa để dùng ngay cho bán hàng.' },
 ];
 
 const initialRequests = [
@@ -19,23 +19,36 @@ const initialRequests = [
   { initials: 'DN', title: 'Tìm tool quản lý social media', detail: 'Cần dùng được nhiều tài khoản, hỗ trợ Windows.', budget: 'Trao đổi', time: '2 giờ trước' },
 ];
 
-const pageTabs = {
-  vi: [
-    { id: 'store', label: 'Sản phẩm của web' },
-    { id: 'buyer', label: 'Người mua' },
-    { id: 'seller', label: 'Người bán' },
-  ],
-  en: [
-    { id: 'store', label: 'Store products' },
-    { id: 'buyer', label: 'Buyers' },
-    { id: 'seller', label: 'Sellers' },
-  ]
-};
-
 const hashtags = ['#chatgpt', '#youtubepremium', '#canva', '#duolingo', '#adobe', '#capcut', '#notion', '#grok', '#office365', '#spotify', '#netflix', '#figma'];
 const categories = {
   vi: ['Tài khoản Premium', 'API Key & AI', 'Mạng xã hội', 'Code, Tool & Phần mềm'],
   en: ['Premium Accounts', 'API Keys & AI', 'Social Growth', 'Code, Tools & Software'],
+};
+
+const courses = [
+  { category: 'IELTS', vi: 'IELTS Writing Band 7-8', en: 'IELTS Writing Band 7-8', viText: 'Phát triển ý, lập luận và diễn đạt cho Task 1 và Task 2.', enText: 'Build ideas, arguments, and language for Task 1 and Task 2.', viLessons: ['Phân tích đề và lập dàn ý', 'Cấu trúc đoạn văn', 'Tự kiểm tra theo tiêu chí chấm'], enLessons: ['Analyze prompts and plan', 'Build strong paragraphs', 'Self-check with scoring criteria'] },
+  { category: 'TOEIC', vi: 'TOEIC Prep 300-600', en: 'TOEIC Prep 300-600', viText: 'Từ vựng, ngữ pháp và chiến thuật theo từng Part.', enText: 'Vocabulary, grammar, and strategy organized by Part.', viLessons: ['Từ vựng công việc', 'Nghe bắt từ khóa', 'Đọc nhanh và loại đáp án nhiễu'], enLessons: ['Workplace vocabulary', 'Listen for keywords', 'Read faster and remove distractors'] },
+  { category: 'English', vi: 'Collocations A1-C2', en: 'Collocations A1-C2', viText: 'Học cụm từ theo cấp độ để nói và viết tự nhiên hơn.', enText: 'Level-based collocations for natural speaking and writing.', viLessons: ['Nền tảng A1-A2', 'Mở rộng B1-B2', 'Tinh chỉnh C1-C2'], enLessons: ['A1-A2 foundations', 'B1-B2 expansion', 'C1-C2 precision'] },
+  { category: 'VSTEP', vi: 'VSTEP theo 4 kỹ năng', en: 'VSTEP Across Four Skills', viText: 'Luyện nghe, nói, đọc, viết theo mục tiêu B1-C1.', enText: 'Practice four skills for B1-C1 goals.', viLessons: ['Xác định mục tiêu điểm', 'Luyện theo dạng bài', 'Mô phỏng ngày thi'], enLessons: ['Set a score target', 'Practice by task type', 'Simulate test day'] },
+  { category: 'Chinese', vi: 'HSK 1-6 theo lộ trình', en: 'HSK 1-6 Learning Path', viText: 'Phát âm, từ vựng, đọc hiểu và viết theo từng cấp HSK.', enText: 'Pronunciation, vocabulary, reading, and writing by HSK level.', viLessons: ['Thanh điệu và phát âm', 'Từ vựng theo chủ đề', 'Đọc hiểu và viết câu'], enLessons: ['Tones and pronunciation', 'Topic vocabulary', 'Reading and sentence writing'] },
+  { category: 'Chinese writing', vi: 'Luyện viết HSK', en: 'HSK Handwriting Practice', viText: 'Rèn nét chữ, thứ tự nét và ghi nhớ từ vựng theo từng cấp độ.', enText: 'Build character form, stroke order, and vocabulary retention by level.', viLessons: ['Nét cơ bản và thứ tự nét', 'Chép từ theo chủ đề', 'Tự kiểm tra độ chính xác'], enLessons: ['Core strokes and stroke order', 'Copy topic vocabulary', 'Self-check for accuracy'] },
+  { category: 'Korean', vi: 'TOPIK và tiếng Hàn tổng hợp', en: 'TOPIK and Practical Korean', viText: 'Ngữ âm, ngữ pháp và từ vựng cho học tập, công việc.', enText: 'Pronunciation, grammar, and vocabulary for study and work.', viLessons: ['Đọc Hangul', 'Mẫu câu giao tiếp', 'Chiến thuật TOPIK'], enLessons: ['Read Hangul', 'Conversation patterns', 'TOPIK strategy'] },
+  { category: 'Work skills', vi: 'Excel cơ bản và MOS', en: 'Excel Foundations and MOS', viText: 'Bảng tính, hàm và quy trình công việc văn phòng.', enText: 'Spreadsheets, functions, and office workflows.', viLessons: ['Cấu trúc bảng tính', 'Hàm và dữ liệu', 'Bài tập mô phỏng công việc'], enLessons: ['Spreadsheet structure', 'Functions and data', 'Work-simulation exercises'] },
+  { category: 'Career', vi: 'Logistics, SAP và xuất nhập khẩu', en: 'Logistics, SAP, and Import-Export', viText: 'Từ vựng nghiệp vụ, chứng từ và quy trình vận hành.', enText: 'Professional vocabulary, documentation, and operations.', viLessons: ['Chuỗi cung ứng', 'Bộ chứng từ', 'Luồng xử lý SAP'], enLessons: ['Supply chains', 'Documentation', 'SAP process flows'] },
+  { category: 'E-commerce', vi: 'Thương mại điện tử toàn cầu', en: 'Global E-commerce Foundations', viText: 'Xây nền tảng vận hành cửa hàng xuyên biên giới từ sản phẩm đến chăm sóc khách hàng.', enText: 'Build a cross-border store workflow from product selection to customer care.', viLessons: ['Chọn thị trường và sản phẩm', 'Thiết lập quy trình đơn hàng', 'Đo lường và cải thiện'], enLessons: ['Choose markets and products', 'Set up order operations', 'Measure and improve'] },
+];
+
+const courseStudy = {
+  IELTS: { vi: ['Lập kế hoạch trước khi viết', 'Đọc đề, xác định yêu cầu và chia ý thành mở bài, hai đoạn thân bài, kết luận.', 'Bài tập: lập dàn ý 10 phút cho một chủ đề giáo dục quen thuộc.'], en: ['Plan before writing', 'Read the prompt, identify its requirement, and group ideas into an introduction, two body paragraphs, and a conclusion.', 'Practice: make a ten-minute plan for a familiar education topic.'] },
+  TOEIC: { vi: ['Dự đoán loại thông tin cần nghe', 'Trước khi nghe, nhận diện câu hỏi đang hỏi người, nơi chốn, thời gian, lý do hay hành động.', 'Bài tập: viết năm câu hỏi công việc và ghi loại câu trả lời cần tìm.'], en: ['Predict the answer type', 'Before listening, identify whether the question asks about a person, place, time, reason, or action.', 'Practice: write five workplace questions and label the needed answer type.'] },
+  English: { vi: ['Học theo cụm từ có ngữ cảnh', 'Ghi nhớ make a decision như một cụm hoàn chỉnh thay vì tách từng từ đơn lẻ.', 'Bài tập: viết ba câu và đổi thì một lần với mỗi cụm từ mới.'], en: ['Learn phrases in context', 'Record make a decision as one complete phrase instead of learning its words separately.', 'Practice: write three sentences and change the tense once for each new phrase.'] },
+  VSTEP: { vi: ['Luyện đúng dạng bài', 'Xác định mục tiêu điểm trước, sau đó dành thời gian cố định cho từng kỹ năng.', 'Bài tập: chọn một dạng nghe hoặc đọc, làm trong thời gian quy định và ghi lỗi.'], en: ['Practice the right task type', 'Set a score target first, then assign fixed time to each skill.', 'Practice: choose one listening or reading task, work under time, and record errors.'] },
+  Chinese: { vi: ['Xây nền phát âm', 'Tách thanh mẫu, vận mẫu và thanh điệu khi học từ mới; sau đó đặt vào câu ngắn.', 'Bài tập: đánh dấu thanh điệu của mười từ theo chủ đề và đọc thành tiếng.'], en: ['Build a pronunciation base', 'Separate initials, finals, and tones for each new word, then place it in a short sentence.', 'Practice: mark tones for ten topic words and read them aloud.'] },
+  'Chinese writing': { vi: ['Viết để nhớ từ', 'Luyện từng ký tự với thứ tự nét ổn định, đọc nghĩa rồi đặt từ vào một câu ngắn trước khi chuyển sang từ tiếp theo.', 'Bài tập: chọn năm từ mới, viết mỗi từ ba lần, sau đó viết một câu cho từng từ.'], en: ['Write to retain vocabulary', 'Practise each character with a consistent stroke order, say its meaning, then use the word in a short sentence before moving on.', 'Practice: choose five new words, write each three times, then write one sentence for each word.'] },
+  Korean: { vi: ['Đọc Hangul theo cụm âm', 'Ghép phụ âm và nguyên âm thành âm tiết trước khi cố đọc cả từ.', 'Bài tập: đọc năm mẫu câu ngắn và gạch chân đuôi câu.'], en: ['Read Hangul by syllable blocks', 'Combine consonants and vowels into syllables before attempting a whole word.', 'Practice: read five short sentence patterns and underline their endings.'] },
+  'Work skills': { vi: ['Làm sạch dữ liệu trước khi tính', 'Đặt tiêu đề cột rõ ràng, kiểm tra định dạng số và dùng một công thức cho một mục đích.', 'Bài tập: tạo bảng chi tiêu, dùng SUM và kiểm tra kết quả bằng phép tính tay.'], en: ['Clean data before calculating', 'Use clear column headers, check number formats, and give each formula one purpose.', 'Practice: create an expense sheet, use SUM, and verify the result by hand.'] },
+  Career: { vi: ['Theo dõi chứng từ theo luồng', 'Gắn mỗi chứng từ với một bước trong chuỗi cung ứng để tránh xử lý thiếu hoặc trùng.', 'Bài tập: vẽ luồng từ báo giá đến giao hàng và ghi chứng từ tại từng bước.'], en: ['Track documents through the flow', 'Connect each document to one supply-chain step to prevent missing or duplicate work.', 'Practice: map the flow from quotation to delivery and name the document at each step.'] },
+  'E-commerce': { vi: ['Bắt đầu từ một quy trình rõ ràng', 'Xác định khách hàng mục tiêu, giá trị sản phẩm, phương thức giao hàng và câu trả lời hỗ trợ trước khi mở bán.', 'Bài tập: lập một trang kế hoạch gồm khách hàng, sản phẩm, giá, giao hàng và ba câu hỏi thường gặp.'], en: ['Start with a clear operating flow', 'Define the target customer, product value, delivery method, and support responses before opening sales.', 'Practice: draft a one-page plan with the customer, product, price, delivery, and three common questions.'] },
 };
 
 const copy = {
@@ -54,6 +67,7 @@ const copy = {
     find: 'Tìm kiếm',
     categories: 'Danh mục',
     featured: 'Sản phẩm của Patrick Tech',
+    patrickProducts: 'Sản phẩm của Patrick Tech',
     viewAll: 'Xem tất cả',
     services: 'Người bán',
     servicesTitle: 'Dành cho người đăng bán sản phẩm số.',
@@ -96,8 +110,8 @@ const copy = {
     telegram: 'Telegram @Patrick_Tech_Fullapp',
     ticket: 'Gửi Ticket Hỗ Trợ / Đặt Hàng',
     ticketEn: 'Submit Ticket / Support',
-    storeNoteTitle: 'Sản phẩm của web',
-    storeNoteText: 'Trang này hiển thị riêng các sản phẩm của web, gồm voucher giảm giá và tài khoản số.',
+    storeNoteTitle: 'Sản phẩm của Patrick Tech',
+    storeNoteText: 'Kho sản phẩm, phần mềm và web mẫu do Patrick Tech phát triển hoặc tuyển chọn, có hỗ trợ sau mua.',
     sellerNoteTitle: 'Trang người bán',
     sellerNoteText: 'Đây là khu đăng bán sản phẩm số, có kiểm duyệt và tính phí nền tảng tự động.',
     buyerNoteTitle: 'Trang người mua',
@@ -119,6 +133,7 @@ const copy = {
     find: 'Search',
     categories: 'Categories',
     featured: 'Patrick Tech Products',
+    patrickProducts: 'Patrick Tech Products',
     viewAll: 'View all',
     services: 'Sellers',
     servicesTitle: 'For people listing digital products.',
@@ -161,8 +176,8 @@ const copy = {
     telegram: 'Telegram @Patrick_Tech_Fullapp',
     ticket: 'Submit Ticket / Support',
     ticketEn: 'Submit Ticket / Support',
-    storeNoteTitle: 'Store products',
-    storeNoteText: 'This page shows only store-owned products, including discount vouchers and digital accounts.',
+    storeNoteTitle: 'Patrick Tech Products',
+    storeNoteText: 'Products, software, and web samples developed or curated by Patrick Tech with post-purchase support.',
     sellerNoteTitle: 'Seller page',
     sellerNoteText: 'This area is for listing digital products with review and automatic platform fees.',
     buyerNoteTitle: 'Buyer page',
@@ -294,7 +309,7 @@ function normalizeProduct(product) {
     ...product,
     category: product.catalogCategory || 'software',
     image: product.image || product.images?.[0] || 'https://stc-zh5.zdn.vn/catalog/thumb-fail.png',
-    badge: 'Sản phẩm của web',
+    badge: 'Sản phẩm của Patrick Tech',
     description: isDescriptionNoise(cleanedDescription, product.priceText) ? '' : cleanedDescription,
     sourceType: product.source === 'zalo-catalog' ? 'catalog' : 'web'
   };
@@ -370,6 +385,21 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyL
   );
 }
 
+function CourseLibrary({ language }) {
+  const [category, setCategory] = useState('All');
+  const categories = ['All', ...new Set(courses.map((course) => course.category))];
+  const filtered = category === 'All' ? courses : courses.filter((course) => course.category === category);
+  const vi = language === 'vi';
+  return <section className="content-section courses-section" id="courses">
+    <div className="section-heading"><div><p className="section-kicker">Patrick Tech Co.</p><h2>{vi ? 'Thư viện khóa học' : 'Course library'}</h2></div></div>
+    <p className="courses-lead">{vi ? 'Bài học được chuẩn hóa để học trực tiếp bằng văn bản và học liệu Patrick Tech. Không có nguồn ngoài trong khu vực khóa học.' : 'Lessons are standardized for direct study with Patrick Tech text and learning media. No external sources appear in the course area.'}</p>
+    <div className="course-filter-row">{categories.map((item) => <button key={item} className={category === item ? 'is-active' : ''} onClick={() => setCategory(item)}>{item === 'All' ? (vi ? 'Tất cả' : 'All') : item}</button>)}</div>
+    <div className="course-grid">{filtered.map((course) => <article className="course-card" key={course.category}>
+      <div className="course-card-header"><span>{course.category}</span><b>PT</b></div><div className="course-card-body"><h3>{course[language]}</h3><p>{course[`${language}Text`]}</p><details><summary>{vi ? 'Mở bài học' : 'Open lesson'}</summary><div className="course-lesson"><p className="course-lesson-title">{courseStudy[course.category][language][0]}</p><p>{courseStudy[course.category][language][1]}</p><p><strong>{vi ? 'Thực hành:' : 'Practice:'}</strong> {courseStudy[course.category][language][2].replace(/^(Bài tập:|Practice:)\s*/, '')}</p></div><ol>{course[`${language}Lessons`].map((lesson) => <li key={lesson}>{lesson}</li>)}</ol><div className="course-status"><strong>{vi ? 'Học liệu Patrick Tech' : 'Patrick Tech learning media'}</strong><span>{vi ? 'Bài học văn bản do Patrick Tech biên soạn. Hình ảnh và âm thanh gốc sẽ được nhập sau khi có quyền sao chép hợp lệ.' : 'Text lesson authored by Patrick Tech. Original images and audio will be imported after lawful copy access is available.'}</span></div></details></div>
+    </article>)}</div>
+  </section>;
+}
+
 export default function App() {
   const [language, setLanguage] = useState('vi');
   const [query, setQuery] = useState('');
@@ -381,13 +411,12 @@ export default function App() {
     const [products, setProducts] = useState([]);
   const [catalogStatus, setCatalogStatus] = useState('loading');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [activePage, setActivePage] = useState('store');
+  const [activePage, setActivePage] = useState(() => window.location.pathname === '/courses' ? 'courses' : 'store');
   const [activeCategory, setActiveCategory] = useState('all');
   const [translatedCatalog, setTranslatedCatalog] = useState({});
   const [translatedTitles, setTranslatedTitles] = useState({});
 
   const t = copy[language];
-  const tabs = pageTabs[language];
   const localizedProducts = useMemo(() => products.map((product) => ({
     ...product,
     title: language === 'en'
@@ -400,6 +429,8 @@ export default function App() {
     ? { title: t.sellerNoteTitle, text: t.sellerNoteText }
     : activePage === 'buyer'
       ? { title: t.buyerNoteTitle, text: t.buyerNoteText }
+      : activePage === 'courses'
+        ? { title: language === 'vi' ? 'Khóa học Patrick Tech' : 'Patrick Tech courses', text: language === 'vi' ? 'Học trực tiếp trong trang với nội dung đã được Patrick Tech chuẩn hóa.' : 'Study directly on the page with Patrick Tech-standardized content.' }
       : { title: t.storeNoteTitle, text: t.storeNoteText };
 
   const filteredProducts = useMemo(
@@ -495,6 +526,7 @@ export default function App() {
 
   const selectPage = (page) => {
     setActivePage(page);
+    window.history.replaceState({}, '', page === 'courses' ? '/courses' : '/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -543,6 +575,7 @@ export default function App() {
           <Logo />
           <div className="nav-actions">
             <a className="domain-button" href="https://patricktechmedia.com" target="_blank" rel="noreferrer">{t.visitSite}</a>
+            <button className="course-header-button" onClick={() => selectPage('courses')}>{language === 'vi' ? 'Khóa học' : 'Courses'}</button>
             <a className="login-button" href={language === 'vi' ? 'https://patricktechmedia.com/vi/login' : 'https://patricktechmedia.com/en/login'} target="_blank" rel="noreferrer">{t.login}</a>
             <a className="ticket-header-button" href={TICKET_LINK} target="_blank" rel="noreferrer">{t.ticket}</a>
             <button className="language-button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')}>{t.language}</button>
@@ -561,6 +594,7 @@ export default function App() {
               <div className="hero-actions">
                 <button className="button button-secondary-alt" onClick={() => selectPage('seller')}>{t.sell}</button>
                 <button className="button button-text" onClick={() => selectPage('buyer')}>{t.wanted}<b>↗</b></button>
+                <button className="button button-text" onClick={() => selectHeroCollection()}>{t.patrickProducts}</button>
                 <button className="button button-text" onClick={() => selectHeroCollection()}>{t.sampleProducts}</button>
                 <button className="button button-text" onClick={() => selectHeroCollection('game')}>{t.games}</button>
               </div>
@@ -579,15 +613,10 @@ export default function App() {
         </section>
 
         <section className="search-region" id="explore">
-          <div className="page-tabs">
-            {tabs.map((tab) => (
-              <button key={tab.id} className={activePage === tab.id ? 'switch-pill is-active' : 'switch-pill'} onClick={() => selectPage(tab.id)}>{tab.label}</button>
-            ))}
-          </div>
           <div className="search-bar">
             <span>⌕</span>
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.search} />
-            <button onClick={() => document.getElementById(activePage === 'store' ? 'products' : activePage === 'seller' ? 'services' : 'wanted')?.scrollIntoView({ behavior: 'smooth' })}>{t.find}</button>
+            <button onClick={() => document.getElementById(activePage === 'store' ? 'products' : activePage === 'seller' ? 'services' : activePage === 'buyer' ? 'wanted' : 'courses')?.scrollIntoView({ behavior: 'smooth' })}>{t.find}</button>
           </div>
           <div className="category-row">
             <span>{t.categories}</span>
@@ -634,6 +663,8 @@ export default function App() {
             </div>
           </section>
         ) : null}
+
+        {activePage === 'courses' ? <CourseLibrary language={language} /> : null}
 
         {activePage === 'seller' ? (
           <section className="seller-section" id="services">
