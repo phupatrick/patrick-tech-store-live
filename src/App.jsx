@@ -123,10 +123,12 @@ const copy = {
     ticketServicePlaceholder: 'Ví dụ: Canva Pro, tài khoản hoặc dịch vụ cần hỗ trợ',
     ticketAccountLabel: 'Thông tin tài khoản lỗi',
     ticketAccountPlaceholder: 'Email, username hoặc mã đơn hàng',
-    ticketPurchaseLabel: 'Ngày mua và hạn bảo hành',
-    ticketPurchasePlaceholder: 'Ví dụ: mua ngày 01/09, bảo hành 30 ngày',
-    ticketIssueLabel: 'Ngày lỗi và tình trạng',
-    ticketIssuePlaceholder: 'Mô tả ngắn lỗi đang gặp',
+    ticketPurchaseLabel: 'Ngày mua',
+    ticketPurchasePlaceholder: 'Ví dụ: 01/09/2026',
+    ticketWarrantyPeriodLabel: 'Hạn bảo hành',
+    ticketWarrantyPeriodPlaceholder: 'Ví dụ: 30 ngày',
+    ticketIssueLabel: 'Chi tiết lỗi / tình trạng',
+    ticketIssuePlaceholder: 'Mô tả lỗi đang gặp, thời điểm xuất hiện và thông báo lỗi nếu có',
     ticketRequestLabel: 'Nội dung chi tiết',
     ticketDeadlineLabel: 'Thời hạn mong muốn',
     ticketDeadlinePlaceholder: 'Ví dụ: cần trong hôm nay',
@@ -223,10 +225,12 @@ const copy = {
     ticketServicePlaceholder: 'Example: Canva Pro, account, or service',
     ticketAccountLabel: 'Affected account information',
     ticketAccountPlaceholder: 'Email, username, or order ID',
-    ticketPurchaseLabel: 'Purchase date and warranty period',
-    ticketPurchasePlaceholder: 'Example: purchased Sep 1, 30-day warranty',
-    ticketIssueLabel: 'Issue date and condition',
-    ticketIssuePlaceholder: 'Briefly describe the issue',
+    ticketPurchaseLabel: 'Purchase date',
+    ticketPurchasePlaceholder: 'Example: Sep 1, 2026',
+    ticketWarrantyPeriodLabel: 'Warranty period',
+    ticketWarrantyPeriodPlaceholder: 'Example: 30 days',
+    ticketIssueLabel: 'Issue details / condition',
+    ticketIssuePlaceholder: 'Describe the issue, when it started, and any error message',
     ticketRequestLabel: 'Request details',
     ticketDeadlineLabel: 'Preferred deadline',
     ticketDeadlinePlaceholder: 'Example: today',
@@ -501,9 +505,10 @@ function TicketPage({ t, selectedProduct, productTitle, ticketCode, ticketSubmit
                 <label>{t.ticketServiceLabel}<input name="service_name" placeholder={displayedProduct || t.ticketServicePlaceholder} defaultValue={displayedProduct || ''} /></label>
                 <label>{t.ticketAccountLabel}<input name="account_info" placeholder={t.ticketAccountPlaceholder} /></label>
                 <div className="ticket-form-grid">
-                  <label>{t.ticketPurchaseLabel}<input name="purchase_warranty_date" placeholder={t.ticketPurchasePlaceholder} /></label>
-                  <label>{t.ticketIssueLabel}<input name="issue_description" placeholder={t.ticketIssuePlaceholder} /></label>
+                  <label>{t.ticketPurchaseLabel}<input name="purchase_date" placeholder={t.ticketPurchasePlaceholder} /></label>
+                  <label>{t.ticketWarrantyPeriodLabel}<input name="warranty_period" placeholder={t.ticketWarrantyPeriodPlaceholder} /></label>
                 </div>
+                <label>{t.ticketIssueLabel}<textarea name="issue_description" required placeholder={t.ticketIssuePlaceholder} /></label>
               </div>
             ) : (
               <div className="ticket-form-section">
