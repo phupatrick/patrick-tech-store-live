@@ -110,6 +110,22 @@ const copy = {
     telegram: 'Telegram @Patrick_Tech_Fullapp',
     ticket: 'Gửi Ticket Hỗ Trợ / Đặt Hàng',
     ticketEn: 'Submit Ticket / Support',
+    ticketTitle: 'Gửi yêu cầu trực tiếp',
+    ticketIntro: 'Để lại thông tin, Patrick Tech sẽ tiếp nhận và phản hồi qua kênh bạn chọn.',
+    ticketName: 'Họ và tên',
+    ticketContactType: 'Kênh liên hệ',
+    ticketContactInfo: 'Thông tin liên hệ',
+    ticketContactPlaceholder: 'Số điện thoại, username hoặc email',
+    ticketRequestType: 'Loại yêu cầu',
+    ticketWarranty: 'Bảo hành / hỗ trợ đơn hàng',
+    ticketNewTask: 'Đặt hàng / yêu cầu mới',
+    ticketDetails: 'Nội dung yêu cầu',
+    ticketDetailsPlaceholder: 'Mô tả sản phẩm, vấn đề hoặc điều bạn cần hỗ trợ...',
+    ticketSend: 'Gửi ticket',
+    ticketSending: 'Đang gửi...',
+    ticketSuccess: 'Đã tạo ticket',
+    ticketSuccessText: 'Mã ticket của bạn là',
+    ticketError: 'Chưa gửi được ticket. Vui lòng thử lại hoặc liên hệ qua Telegram.',
     storeNoteTitle: 'Sản phẩm của Patrick Tech',
     storeNoteText: 'Kho sản phẩm, phần mềm và web mẫu do Patrick Tech phát triển hoặc tuyển chọn, có hỗ trợ sau mua.',
     sellerNoteTitle: 'Trang người bán',
@@ -176,6 +192,22 @@ const copy = {
     telegram: 'Telegram @Patrick_Tech_Fullapp',
     ticket: 'Submit Ticket / Support',
     ticketEn: 'Submit Ticket / Support',
+    ticketTitle: 'Send a request directly',
+    ticketIntro: 'Leave your details and Patrick Tech will follow up through your chosen channel.',
+    ticketName: 'Full name',
+    ticketContactType: 'Contact channel',
+    ticketContactInfo: 'Contact details',
+    ticketContactPlaceholder: 'Phone number, username, or email',
+    ticketRequestType: 'Request type',
+    ticketWarranty: 'Warranty / order support',
+    ticketNewTask: 'New order / request',
+    ticketDetails: 'Request details',
+    ticketDetailsPlaceholder: 'Describe the product, issue, or support you need...',
+    ticketSend: 'Send ticket',
+    ticketSending: 'Sending...',
+    ticketSuccess: 'Ticket created',
+    ticketSuccessText: 'Your ticket code is',
+    ticketError: 'The ticket could not be sent. Please try again or contact us on Telegram.',
     storeNoteTitle: 'Patrick Tech Products',
     storeNoteText: 'Products, software, and web samples developed or curated by Patrick Tech with post-purchase support.',
     sellerNoteTitle: 'Seller page',
@@ -354,15 +386,13 @@ function Logo() {
   );
 }
 
-function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyLabel, descriptionLabel, ticketLabel }) {
+function ProductCard({ product, language, onSave, onBuy, onViewDescription, onTicket, buyLabel, descriptionLabel, ticketLabel }) {
   const [saved, setSaved] = useState(false);
 
   const toggleSave = () => {
     setSaved((current) => !current);
     onSave(!saved);
   };
-
-  const ticketUrl = `${TICKET_LINK}?subject=${encodeURIComponent(language === 'en' ? `Product request: ${product.title}` : `Yêu cầu sản phẩm: ${product.title}`)}`;
 
   return (
     <article className="product-card">
@@ -378,7 +408,7 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, buyL
         <div className="product-actions-row">
           <button className="description-button" aria-label={descriptionLabel} title={descriptionLabel} onClick={() => onViewDescription(product)}>{descriptionLabel}</button>
           <button className="buy-button" onClick={() => onBuy(product)}>{buyLabel}</button>
-          <a className="ticket-button" href={ticketUrl} target="_blank" rel="noreferrer">{ticketLabel}</a>
+          <button className="ticket-button" onClick={() => onTicket(product)}>{ticketLabel}</button>
         </div>
       </div>
     </article>
@@ -415,6 +445,8 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [translatedCatalog, setTranslatedCatalog] = useState({});
   const [translatedTitles, setTranslatedTitles] = useState({});
+  const [ticketSubmitting, setTicketSubmitting] = useState(false);
+  const [ticketCode, setTicketCode] = useState('');
 
   const t = copy[language];
   const localizedProducts = useMemo(() => products.map((product) => ({
@@ -530,6 +562,44 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const openTicketModal = (product = null) => {
+    setSelectedProduct(product);
+    setTicketCode('');
+    setModal('ticket');
+  };
+
+  const submitTicket = async (event) => {
+    event.preventDefault();
+    setTicketSubmitting(true);
+    const form = new FormData(event.currentTarget);
+    const productTitle = selectedProduct
+      ? (language === 'en' ? (translatedTitles[String(selectedProduct.id || selectedProduct.path || selectedProduct.title)] || translateCatalogText(selectedProduct.title, 'en')) : selectedProduct.title)
+      : '';
+    try {
+      const response = await fetch(`${TICKET_LINK.replace(/\/$/, '')}/api/tickets`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_name: form.get('client_name'),
+          contact_type: form.get('contact_type'),
+          contact_info: form.get('contact_info'),
+          request_type: form.get('request_type'),
+          product: productTitle,
+          details: form.get('details'),
+          source: 'patricktechmedia.store',
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || 'ticket failed');
+      setTicketCode(data.ticket_code || '');
+    } catch (error) {
+      console.error('Ticket submission failed:', error);
+      showNotice(t.ticketError);
+    } finally {
+      setTicketSubmitting(false);
+    }
+  };
+
   const selectHeroCollection = (search = '') => {
     setActivePage('store');
     setActiveCategory('all');
@@ -577,7 +647,7 @@ export default function App() {
             <a className="domain-button" href="https://patricktechmedia.com" target="_blank" rel="noreferrer">{t.visitSite}</a>
             <button className="course-header-button" onClick={() => selectPage('courses')}>{language === 'vi' ? 'Khóa học' : 'Courses'}</button>
             <a className="login-button" href={language === 'vi' ? 'https://patricktechmedia.com/vi/login' : 'https://patricktechmedia.com/en/login'} target="_blank" rel="noreferrer">{t.login}</a>
-            <a className="ticket-header-button" href={TICKET_LINK} target="_blank" rel="noreferrer">{t.ticket}</a>
+            <button className="ticket-header-button" onClick={() => openTicketModal()}>{t.ticket}</button>
             <button className="language-button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')}>{t.language}</button>
             
           </div>
@@ -654,6 +724,7 @@ export default function App() {
                   language={language}
                   onSave={(wasSaved) => setSaved((count) => count + (wasSaved ? 1 : -1))}
                   onBuy={openBuyModal}
+                  onTicket={openTicketModal}
                   onViewDescription={openDescriptionModal}
                   buyLabel={t.buyNow}
                   descriptionLabel={t.viewDescription}
@@ -722,7 +793,29 @@ export default function App() {
         <div className="modal-backdrop" onMouseDown={() => setModal(null)}>
           <section className="modal" onMouseDown={(event) => event.stopPropagation()}>
             <button className="modal-close" aria-label={t.close} onClick={() => setModal(null)}>×</button>
-            {modal === 'listing' ? (
+            {modal === 'ticket' ? (
+              ticketCode ? (
+                <div className="contact-sheet ticket-success">
+                  <p className="section-kicker">{t.ticketSuccess}</p>
+                  <h2>{t.ticketSuccess}</h2>
+                  <p>{t.ticketSuccessText} <strong>{ticketCode}</strong></p>
+                  <button className="button button-primary button-full" onClick={() => setModal(null)}>{t.close}</button>
+                </div>
+              ) : (
+                <form onSubmit={submitTicket}>
+                  <p className="section-kicker">{t.ticket}</p>
+                  <h2>{t.ticketTitle}</h2>
+                  <p className="ticket-intro">{t.ticketIntro}</p>
+                  {selectedProduct ? <p className="contact-product ticket-selected-product">{language === 'en' ? (translatedTitles[String(selectedProduct.id || selectedProduct.path || selectedProduct.title)] || translateCatalogText(selectedProduct.title, 'en')) : selectedProduct.title}</p> : null}
+                  <label>{t.ticketName}<input name="client_name" required autoComplete="name" /></label>
+                  <label>{t.ticketContactType}<select name="contact_type" defaultValue="Telegram" required><option value="Telegram">Telegram</option><option value="Zalo">Zalo</option><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Gmail">Gmail</option><option value="Điện thoại">{language === 'en' ? 'Phone' : 'Điện thoại'}</option><option value="Khác">{language === 'en' ? 'Other' : 'Khác'}</option></select></label>
+                  <label>{t.ticketContactInfo}<input name="contact_info" required placeholder={t.ticketContactPlaceholder} /></label>
+                  <label>{t.ticketRequestType}<select name="request_type" defaultValue="new_task" required><option value="new_task">{t.ticketNewTask}</option><option value="warranty">{t.ticketWarranty}</option></select></label>
+                  <label>{t.ticketDetails}<textarea name="details" required placeholder={t.ticketDetailsPlaceholder} defaultValue={selectedProduct ? `Product: ${selectedProduct.title}` : ''} /></label>
+                  <button className="button button-primary button-full" type="submit" disabled={ticketSubmitting}>{ticketSubmitting ? t.ticketSending : t.ticketSend} <b>↗</b></button>
+                </form>
+              )
+            ) : modal === 'listing' ? (
               <form onSubmit={submitListing}>
                 <p className="section-kicker">{t.listing}</p>
                 <h2>{t.servicesTitle}</h2>
