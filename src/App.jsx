@@ -415,6 +415,40 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, onTi
   );
 }
 
+function TicketPage({ t, selectedProduct, productTitle, ticketCode, ticketSubmitting, onSubmit, onBack }) {
+  const displayedProduct = selectedProduct?.title || productTitle;
+  return (
+    <section className="ticket-page">
+      <div className="ticket-page-intro">
+        <p className="section-kicker">Patrick Tech Support</p>
+        <h1>{t.ticketTitle}</h1>
+        <p>{t.ticketIntro}</p>
+        <button className="button button-text" onClick={onBack}>← {t.viewAll}</button>
+      </div>
+      <div className="ticket-page-form">
+        {ticketCode ? (
+          <div className="ticket-success">
+            <p className="section-kicker">{t.ticketSuccess}</p>
+            <h2>{t.ticketSuccess}</h2>
+            <p>{t.ticketSuccessText} <strong>{ticketCode}</strong></p>
+            <button className="button button-primary" onClick={onBack}>{t.viewAll}</button>
+          </div>
+        ) : (
+          <form onSubmit={onSubmit}>
+            {displayedProduct ? <p className="contact-product ticket-selected-product">{displayedProduct}</p> : null}
+            <label>{t.ticketName}<input name="client_name" required autoComplete="name" /></label>
+            <label>{t.ticketContactType}<select name="contact_type" defaultValue="Telegram" required><option value="Telegram">Telegram</option><option value="Zalo">Zalo</option><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Gmail">Gmail</option><option value="Điện thoại">{t.language === 'English' ? 'Phone' : 'Điện thoại'}</option><option value="Khác">{t.language === 'English' ? 'Other' : 'Khác'}</option></select></label>
+            <label>{t.ticketContactInfo}<input name="contact_info" required placeholder={t.ticketContactPlaceholder} /></label>
+            <label>{t.ticketRequestType}<select name="request_type" defaultValue="new_task" required><option value="new_task">{t.ticketNewTask}</option><option value="warranty">{t.ticketWarranty}</option></select></label>
+            <label>{t.ticketDetails}<textarea name="details" required placeholder={t.ticketDetailsPlaceholder} defaultValue={displayedProduct ? `Product: ${displayedProduct}` : ''} /></label>
+            <button className="button button-primary button-full" type="submit" disabled={ticketSubmitting}>{ticketSubmitting ? t.ticketSending : t.ticketSend} <b>↗</b></button>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function CourseLibrary({ language }) {
   const [category, setCategory] = useState('All');
   const categories = ['All', ...new Set(courses.map((course) => course.category))];
@@ -441,12 +475,13 @@ export default function App() {
     const [products, setProducts] = useState([]);
   const [catalogStatus, setCatalogStatus] = useState('loading');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [activePage, setActivePage] = useState(() => window.location.pathname === '/courses' ? 'courses' : 'store');
+  const [activePage, setActivePage] = useState(() => window.location.pathname === '/courses' ? 'courses' : window.location.pathname === '/ticket' ? 'ticket' : 'store');
   const [activeCategory, setActiveCategory] = useState('all');
   const [translatedCatalog, setTranslatedCatalog] = useState({});
   const [translatedTitles, setTranslatedTitles] = useState({});
   const [ticketSubmitting, setTicketSubmitting] = useState(false);
   const [ticketCode, setTicketCode] = useState('');
+  const [ticketProductTitle, setTicketProductTitle] = useState(() => new URLSearchParams(window.location.search).get('product') || '');
 
   const t = copy[language];
   const localizedProducts = useMemo(() => products.map((product) => ({
@@ -574,7 +609,7 @@ export default function App() {
     const form = new FormData(event.currentTarget);
     const productTitle = selectedProduct
       ? (language === 'en' ? (translatedTitles[String(selectedProduct.id || selectedProduct.path || selectedProduct.title)] || translateCatalogText(selectedProduct.title, 'en')) : selectedProduct.title)
-      : '';
+      : ticketProductTitle;
     try {
       const response = await fetch(`${TICKET_LINK.replace(/\/$/, '')}/api/tickets`, {
         method: 'POST',
@@ -605,6 +640,16 @@ export default function App() {
     setActiveCategory('all');
     setQuery(search);
     window.setTimeout(() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }), 0);
+  };
+
+  const openTicketPage = (product = null) => {
+    const title = product ? (language === 'en' ? (translatedTitles[String(product.id || product.path || product.title)] || translateCatalogText(product.title, 'en')) : product.title) : '';
+    setSelectedProduct(product);
+    setTicketProductTitle(title);
+    setTicketCode('');
+    setActivePage('ticket');
+    window.history.pushState({}, '', title ? `/ticket?product=${encodeURIComponent(title)}` : '/ticket');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -647,7 +692,7 @@ export default function App() {
             <a className="domain-button" href="https://patricktechmedia.com" target="_blank" rel="noreferrer">{t.visitSite}</a>
             <button className="course-header-button" onClick={() => selectPage('courses')}>{language === 'vi' ? 'Khóa học' : 'Courses'}</button>
             <a className="login-button" href={language === 'vi' ? 'https://patricktechmedia.com/vi/login' : 'https://patricktechmedia.com/en/login'} target="_blank" rel="noreferrer">{t.login}</a>
-            <button className="ticket-header-button" onClick={() => openTicketModal()}>{t.ticket}</button>
+            <button className="ticket-header-button" onClick={() => openTicketPage()}>{t.ticket}</button>
             <button className="language-button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')}>{t.language}</button>
             
           </div>
@@ -655,6 +700,7 @@ export default function App() {
       </header>
 
       <main>
+        {activePage === 'ticket' ? <TicketPage t={t} selectedProduct={selectedProduct} productTitle={ticketProductTitle} ticketCode={ticketCode} ticketSubmitting={ticketSubmitting} onSubmit={submitTicket} onBack={() => selectPage('store')} /> : <>
         <section className="hero">
           <div className="hero-inner">
             <div className="hero-copy">
@@ -724,7 +770,7 @@ export default function App() {
                   language={language}
                   onSave={(wasSaved) => setSaved((count) => count + (wasSaved ? 1 : -1))}
                   onBuy={openBuyModal}
-                  onTicket={openTicketModal}
+                  onTicket={openTicketPage}
                   onViewDescription={openDescriptionModal}
                   buyLabel={t.buyNow}
                   descriptionLabel={t.viewDescription}
@@ -779,6 +825,7 @@ export default function App() {
             </div>
           </section>
         ) : null}
+        </>}
       </main>
 
       <footer>
