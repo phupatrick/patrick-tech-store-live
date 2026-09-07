@@ -112,6 +112,24 @@ const copy = {
     ticketEn: 'Submit Ticket / Support',
     ticketTitle: 'Gửi yêu cầu trực tiếp',
     ticketIntro: 'Để lại thông tin, Patrick Tech sẽ tiếp nhận và phản hồi qua kênh bạn chọn.',
+    ticketContactTitle: 'Cần hỗ trợ nhanh?',
+    ticketContactSection: '1. Thông tin liên hệ nhận kết quả',
+    ticketNamePlaceholder: 'Họ tên hoặc biệt danh',
+    ticketTypeSection: '2. Phân loại yêu cầu',
+    ticketWarrantyDetails: '3. Chi tiết bảo hành',
+    ticketNewDetails: '3. Chi tiết yêu cầu mới',
+    ticketServiceLabel: 'Tên dịch vụ / Gói tài khoản',
+    ticketServiceNewLabel: 'Tên dịch vụ / Nội dung cần làm',
+    ticketServicePlaceholder: 'Ví dụ: Canva Pro, tài khoản hoặc dịch vụ cần hỗ trợ',
+    ticketAccountLabel: 'Thông tin tài khoản lỗi',
+    ticketAccountPlaceholder: 'Email, username hoặc mã đơn hàng',
+    ticketPurchaseLabel: 'Ngày mua và hạn bảo hành',
+    ticketPurchasePlaceholder: 'Ví dụ: mua ngày 01/09, bảo hành 30 ngày',
+    ticketIssueLabel: 'Ngày lỗi và tình trạng',
+    ticketIssuePlaceholder: 'Mô tả ngắn lỗi đang gặp',
+    ticketRequestLabel: 'Nội dung chi tiết',
+    ticketDeadlineLabel: 'Thời hạn mong muốn',
+    ticketDeadlinePlaceholder: 'Ví dụ: cần trong hôm nay',
     ticketName: 'Họ và tên',
     ticketContactType: 'Kênh liên hệ',
     ticketContactInfo: 'Thông tin liên hệ',
@@ -194,6 +212,24 @@ const copy = {
     ticketEn: 'Submit Ticket / Support',
     ticketTitle: 'Send a request directly',
     ticketIntro: 'Leave your details and Patrick Tech will follow up through your chosen channel.',
+    ticketContactTitle: 'Need a quick reply?',
+    ticketContactSection: '1. Contact information',
+    ticketNamePlaceholder: 'Full name or nickname',
+    ticketTypeSection: '2. Request type',
+    ticketWarrantyDetails: '3. Warranty details',
+    ticketNewDetails: '3. New request details',
+    ticketServiceLabel: 'Service / Account package',
+    ticketServiceNewLabel: 'Service / Task name',
+    ticketServicePlaceholder: 'Example: Canva Pro, account, or service',
+    ticketAccountLabel: 'Affected account information',
+    ticketAccountPlaceholder: 'Email, username, or order ID',
+    ticketPurchaseLabel: 'Purchase date and warranty period',
+    ticketPurchasePlaceholder: 'Example: purchased Sep 1, 30-day warranty',
+    ticketIssueLabel: 'Issue date and condition',
+    ticketIssuePlaceholder: 'Briefly describe the issue',
+    ticketRequestLabel: 'Request details',
+    ticketDeadlineLabel: 'Preferred deadline',
+    ticketDeadlinePlaceholder: 'Example: today',
     ticketName: 'Full name',
     ticketContactType: 'Contact channel',
     ticketContactInfo: 'Contact details',
@@ -416,6 +452,7 @@ function ProductCard({ product, language, onSave, onBuy, onViewDescription, onTi
 }
 
 function TicketPage({ t, selectedProduct, productTitle, ticketCode, ticketSubmitting, onSubmit, onBack }) {
+  const [requestType, setRequestType] = useState('warranty');
   const displayedProduct = selectedProduct?.title || productTitle;
   return (
     <section className="ticket-page">
@@ -423,6 +460,13 @@ function TicketPage({ t, selectedProduct, productTitle, ticketCode, ticketSubmit
         <p className="section-kicker">Patrick Tech Support</p>
         <h1>{t.ticketTitle}</h1>
         <p>{t.ticketIntro}</p>
+        <div className="ticket-contact-strip">
+          <strong>{t.ticketContactTitle}</strong>
+          <a href={TELEGRAM_LINK} target="_blank" rel="noreferrer">Telegram</a>
+          <a href="https://wa.me/84933684560" target="_blank" rel="noreferrer">WhatsApp</a>
+          <a href={ZALO_LINK} target="_blank" rel="noreferrer">Zalo</a>
+          <a href="tel:0933684560">0933 684 560</a>
+        </div>
         <button className="button button-text" onClick={onBack}>← {t.viewAll}</button>
       </div>
       <div className="ticket-page-form">
@@ -436,11 +480,39 @@ function TicketPage({ t, selectedProduct, productTitle, ticketCode, ticketSubmit
         ) : (
           <form onSubmit={onSubmit}>
             {displayedProduct ? <p className="contact-product ticket-selected-product">{displayedProduct}</p> : null}
-            <label>{t.ticketName}<input name="client_name" required autoComplete="name" /></label>
-            <label>{t.ticketContactType}<select name="contact_type" defaultValue="Telegram" required><option value="Telegram">Telegram</option><option value="Zalo">Zalo</option><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Gmail">Gmail</option><option value="Điện thoại">{t.language === 'English' ? 'Phone' : 'Điện thoại'}</option><option value="Khác">{t.language === 'English' ? 'Other' : 'Khác'}</option></select></label>
-            <label>{t.ticketContactInfo}<input name="contact_info" required placeholder={t.ticketContactPlaceholder} /></label>
-            <label>{t.ticketRequestType}<select name="request_type" defaultValue="new_task" required><option value="new_task">{t.ticketNewTask}</option><option value="warranty">{t.ticketWarranty}</option></select></label>
-            <label>{t.ticketDetails}<textarea name="details" required placeholder={t.ticketDetailsPlaceholder} defaultValue={displayedProduct ? `Product: ${displayedProduct}` : ''} /></label>
+            <div className="ticket-form-section">
+              <h2>{t.ticketContactSection}</h2>
+              <div className="ticket-form-grid">
+                <label>{t.ticketName}<input name="client_name" required autoComplete="name" placeholder={t.ticketNamePlaceholder} /></label>
+                <label>{t.ticketContactType}<select name="contact_type" defaultValue="Telegram" required><option value="Zalo">Zalo</option><option value="Telegram">Telegram</option><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Gmail">Gmail</option><option value="Điện thoại">{t.language === 'English' ? 'Phone' : 'Điện thoại'}</option><option value="Khác">{t.language === 'English' ? 'Other' : 'Khác'}</option></select></label>
+              </div>
+              <label>{t.ticketContactInfo}<input name="contact_info" required placeholder={t.ticketContactPlaceholder} /></label>
+            </div>
+            <div className="ticket-form-section">
+              <h2>{t.ticketTypeSection}</h2>
+              <div className="ticket-choice-grid">
+                <label className={requestType === 'warranty' ? 'ticket-choice is-selected' : 'ticket-choice'}><input type="radio" name="request_type" value="warranty" checked={requestType === 'warranty'} onChange={() => setRequestType('warranty')} />{t.ticketWarranty}</label>
+                <label className={requestType === 'new_task' ? 'ticket-choice is-selected' : 'ticket-choice'}><input type="radio" name="request_type" value="new_task" checked={requestType === 'new_task'} onChange={() => setRequestType('new_task')} />{t.ticketNewTask}</label>
+              </div>
+            </div>
+            {requestType === 'warranty' ? (
+              <div className="ticket-form-section">
+                <h2>{t.ticketWarrantyDetails}</h2>
+                <label>{t.ticketServiceLabel}<input name="service_name" placeholder={displayedProduct || t.ticketServicePlaceholder} defaultValue={displayedProduct || ''} /></label>
+                <label>{t.ticketAccountLabel}<input name="account_info" placeholder={t.ticketAccountPlaceholder} /></label>
+                <div className="ticket-form-grid">
+                  <label>{t.ticketPurchaseLabel}<input name="purchase_warranty_date" placeholder={t.ticketPurchasePlaceholder} /></label>
+                  <label>{t.ticketIssueLabel}<input name="issue_description" placeholder={t.ticketIssuePlaceholder} /></label>
+                </div>
+              </div>
+            ) : (
+              <div className="ticket-form-section">
+                <h2>{t.ticketNewDetails}</h2>
+                <label>{t.ticketServiceNewLabel}<input name="service_name_new" placeholder={displayedProduct || t.ticketServicePlaceholder} defaultValue={displayedProduct || ''} /></label>
+                <label>{t.ticketRequestLabel}<textarea name="request_content" required placeholder={t.ticketDetailsPlaceholder} defaultValue={displayedProduct ? `Product: ${displayedProduct}` : ''} /></label>
+                <label>{t.ticketDeadlineLabel}<input name="deadline" placeholder={t.ticketDeadlinePlaceholder} /></label>
+              </div>
+            )}
             <button className="button button-primary button-full" type="submit" disabled={ticketSubmitting}>{ticketSubmitting ? t.ticketSending : t.ticketSend} <b>↗</b></button>
           </form>
         )}
@@ -615,12 +687,9 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          client_name: form.get('client_name'),
-          contact_type: form.get('contact_type'),
-          contact_info: form.get('contact_info'),
-          request_type: form.get('request_type'),
+          ...Object.fromEntries(form.entries()),
+          service_name: form.get('service_name') || form.get('service_name_new') || productTitle,
           product: productTitle,
-          details: form.get('details'),
           source: 'patricktechmedia.store',
         }),
       });
