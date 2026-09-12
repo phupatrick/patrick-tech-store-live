@@ -93,7 +93,7 @@ const copy = {
     postRequest: 'Đăng nhu cầu',
     created: 'Bài đăng đã được gửi và đang chờ duyệt.',
     requestCreated: 'Nhu cầu tìm mua đã được đăng.',
-    noResult: 'Chưa tìm thấy sản phẩm phù hợp. Hãy thử từ khóa khác.',
+    noResult: 'Sản phẩm không có sẵn trong kho, vui lòng liên hệ admin để đặt hàng.',
     loadingProducts: 'Đang tải kho sản phẩm...',
     catalogError: 'Chưa tải được dữ liệu mới nhất, đang hiển thị dữ liệu dự phòng.',
     footer: 'Nơi giao dịch tài nguyên số gọn gàng, minh bạch.',
@@ -195,7 +195,7 @@ const copy = {
     postRequest: 'Post request',
     created: 'Your listing has been submitted for review.',
     requestCreated: 'Your wanted request is now live.',
-    noResult: 'No matching products yet. Try a different keyword.',
+    noResult: 'Products are not currently available in stock. Please contact an admin to place an order.',
     loadingProducts: 'Loading products...',
     catalogError: 'Latest data is unavailable, showing backup products.',
     footer: 'A clear marketplace for digital resources.',
@@ -850,7 +850,16 @@ export default function App() {
                   descriptionLabel={t.viewDescription}
                   ticketLabel={t.ticket}
                 />
-              )) : <p className="empty-state">{t.noResult}</p>}
+              )) : (
+                <div className="empty-state">
+                  <p>{t.noResult}</p>
+                  <div className="empty-state-actions">
+                    <a className="button" href={ZALO_LINK} target="_blank" rel="noreferrer">{t.zalo}</a>
+                    <a className="button" href={TELEGRAM_LINK} target="_blank" rel="noreferrer">{t.telegram}</a>
+                    <a className="button" href={TICKET_LINK} target="_blank" rel="noreferrer">{t.ticket}</a>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         ) : null}
