@@ -94,7 +94,7 @@ const copy = {
     created: 'Bài đăng đã được gửi và đang chờ duyệt.',
     requestCreated: 'Nhu cầu tìm mua đã được đăng.',
     noResult: 'Sản phẩm không có sẵn trong kho, vui lòng liên hệ admin để đặt hàng.',
-    loadingProducts: 'Đang tải kho sản phẩm...',
+    loadingProducts: 'Đang tải sản phẩm, quý khách vui lòng đợi!',
     catalogError: 'Chưa tải được dữ liệu mới nhất, đang hiển thị dữ liệu dự phòng.',
     footer: 'Nơi giao dịch tài nguyên số gọn gàng, minh bạch.',
     saved: 'sản phẩm đã lưu',
@@ -196,7 +196,7 @@ const copy = {
     created: 'Your listing has been submitted for review.',
     requestCreated: 'Your wanted request is now live.',
     noResult: 'Products are not currently available in stock. Please contact an admin to place an order.',
-    loadingProducts: 'Loading products...',
+    loadingProducts: 'Loading products, please wait!',
     catalogError: 'Latest data is unavailable, showing backup products.',
     footer: 'A clear marketplace for digital resources.',
     saved: 'saved products',
@@ -837,7 +837,7 @@ export default function App() {
             {catalogStatus === 'loading' && <p className="catalog-note">{t.loadingProducts}</p>}
             {catalogStatus === 'error' && <p className="catalog-note is-warning">{t.catalogError}</p>}
             <div className="product-grid">
-              {filteredProducts.length ? filteredProducts.map((product) => (
+              {catalogStatus === 'loading' ? null : filteredProducts.length ? filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id || product.title}
                   product={product}
@@ -854,9 +854,9 @@ export default function App() {
                 <div className="empty-state">
                   <p>{t.noResult}</p>
                   <div className="empty-state-actions">
-                    <a className="button" href={ZALO_LINK} target="_blank" rel="noreferrer">{t.zalo}</a>
-                    <a className="button" href={TELEGRAM_LINK} target="_blank" rel="noreferrer">{t.telegram}</a>
-                    <a className="button" href={TICKET_LINK} target="_blank" rel="noreferrer">{t.ticket}</a>
+                    <a className="button contact-action contact-action-zalo" href={ZALO_LINK} target="_blank" rel="noreferrer">{t.zalo}</a>
+                    <a className="button contact-action contact-action-telegram" href={TELEGRAM_LINK} target="_blank" rel="noreferrer">{t.telegram}</a>
+                    <a className="button contact-action contact-action-ticket" href={TICKET_LINK} target="_blank" rel="noreferrer">{t.ticket}</a>
                   </div>
                 </div>
               )}
