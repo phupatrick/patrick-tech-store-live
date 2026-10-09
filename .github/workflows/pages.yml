@@ -1,4 +1,4 @@
-﻿name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      - run: node scripts/build-catalog.mjs
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

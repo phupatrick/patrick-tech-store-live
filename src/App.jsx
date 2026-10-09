@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { cleanEnglishDescription } from './utils/translationDictionary';
 
@@ -420,7 +420,7 @@ function CatalogDescription({ text }) {
 function Logo() {
   return (
     <a className="logo" href="https://patricktechmedia.com" target="_blank" rel="noreferrer" aria-label="patricktechmedia.com">
-      <img src="https://patricktechmedia.com/patrick-tech-media-icon.svg?v=39177d1409a5053bff72af89" alt="Patrick Tech Media" />
+      <img src="./patrick-tech-media-icon.svg" alt="Patrick Tech Media" />
       <span>Patrick Tech Store</span>
     </a>
   );
@@ -731,8 +731,9 @@ export default function App() {
 
     async function loadProducts() {
       try {
-        const response = await fetch('/api/products');
-        if (!response.ok) throw new Error('catalog api failed');
+        // Static catalog pre-fetched at build time (GitHub Pages has no server API).
+        const response = await fetch('./catalog.json');
+        if (!response.ok) throw new Error('catalog fetch failed');
         const data = await response.json();
         if (active && Array.isArray(data.products) && data.products.length) {
           setProducts(data.products.map((item) => normalizeProduct(item)));
